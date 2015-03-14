@@ -1,0 +1,42 @@
+#SETTINGS FILE
+#FOR FAND
+#MODIFY THE SETTINGS BY
+#SIMPLY REPLACING THE VALUES
+
+
+MODE=MAX
+#MODE: Either AVG or MAX
+#      AVG will average all the temperatures
+#      MAX will use the highest temp.
+
+MAX=60
+#MAX: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to full-speed
+
+SEVEN=55
+#SEVEN: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to level7
+
+SIX=50
+#SIX: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to level6
+
+FIVE=45
+#FIVE: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to level5
+
+FOUR=40
+#FOUR: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to level4
+
+THREE=35
+#THREE: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to level3
+
+TWO=30
+#TWO: Any Value. THERE IS NO SANITY CHECKING
+#     Detonates the temperature at which the fan will be set to level2
+
+SLEEP=180
+#SLEEP: Any Value.
+#      Time in seconds between updates.

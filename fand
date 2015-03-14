@@ -1,0 +1,78 @@
+#! /bin/bash
+
+#variable declarations
+HIGHTEMP=0
+CURRTEMP=0
+MODE=MAX #these are defaults that will be overwritten if a settings file exists
+MAX=60
+SEVEN=55
+SIX=50
+FIVE=45
+FOUR=40
+THREE=35
+TWO=30
+SLEEP=180
+
+#finds the config file
+WORKINGDIR="$(dirname "$0")"
+#parses the config file
+source "$WORKINGDIR/settings"
+
+#finds number of cpu cores
+NUMCORES=$(grep -c ^processor /proc/cpuinfo)
+
+#checks that fan files and temp files exist
+if [ ! -f /proc/acpi/ibm/fan ]; then
+    echo "ERROR: Could not access fan file."
+    exit 1
+fi
+for i in `seq 0 $(($NUMCORES - 1))`; do
+  if [ ! -f /sys/class/thermal/thermal_zone$i/temp ]; then
+    echo "ERROR: Could not access temp file(s)."
+    exit 1
+  fi
+done
+
+#loops every time we check the temps and change the fans
+while true; do
+  #determines the mode
+  if (($MODE == MAX)); then
+    #now that we know all the files exist, we must now find highest temp
+    for x in `seq 0 $(($NUMCORES - 1))`; do
+      CURRTEMP=$(($(cat /sys/class/thermal/thermal_zone$x/temp) / 1000))
+      if (($CURRTEMP > $HIGHTEMP)); then
+        HIGHTEMP=$CURRTEMP
+      fi
+    done
+  else
+    for x in `seq 0 $(($NUMCORES - 1))`; do
+      CURRTEMP=$(($(cat /sys/class/thermal/thermal_zone$x/temp) / 1000))
+      if (($HIGHTEMP == 0)); then
+        HIGHTEMP=$CURRTEMP
+      else
+        HIGHTEMP=$(($(($CURRTEMP + $HIGHTEMP)) / 2))
+      fi
+    done
+  fi
+  
+  #check config files and take action
+  if (($HIGHTEMP > $MAX)); then
+    echo level full-speed > /proc/acpi/ibm/fan
+  elif (($HIGHTEMP > $SEVEN)); then
+    echo level 7 > /proc/acpi/ibm/fan
+  elif (($HIGHTEMP > $SIX)); then
+    echo level 6 > /proc/acpi/ibm/fan
+  elif (($HIGHTEMP > $FIVE)); then
+    echo level 5 > /proc/acpi/ibm/fan
+  elif (($HIGHTEMP > $FOUR)); then
+    echo level 4 > /proc/acpi/ibm/fan
+  elif (($HIGHTEMP > $THREE)); then
+    echo level 3 > /proc/acpi/ibm/fan
+  elif (($HIGHTEMP > $TWO)); then
+    echo level 2 > /proc/acpi/ibm/fan
+  else
+    echo level 1 > /proc/acpi/ibm/fan
+  fi
+  sleep "$SLEEP"
+#end of main loop
+done
