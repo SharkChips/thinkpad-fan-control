@@ -10,10 +10,12 @@ INSTALLATION
  1. Download a .zip of thinkpad-fan from GitHub
  2. Unzip it to a directory where only root can modify
  3. Change the owner of all the files to root
- 4. Change the files to all be read-only
+    THIS IS CRITICAL!!! NOT DOING THIS WOULD BE A HUGE SECURITY HOLE!!!!!
+ 4. Change the files' permissions to all be read-only for everyone and executable for root
+    THIS IS ALSO CRITICAL!!! NOT DOING THIS WOULD BE A HUGE SECURITY HOLE!!!!!
  5. Add this line to /etc/rc.local:
  
-    /bin/bash /path/to/thinkpad-fan/fand &
+    (setsid "/path/to/fand" &);
     
  6. The line after that line should be
  
@@ -26,6 +28,7 @@ INSTALLATION
     options thinkpad_acpi fan_control=1
 
  10. Reboot to take effect
+ 11. MAKE SURE ALL THE 
  
 USAGE
 
