@@ -1,8 +1,8 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          fand
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Fan Speed Daemon
@@ -13,8 +13,8 @@
 # Author: Albert Zhang <albertzhang66@outlook.com>
 
 PROG="fand"
-PROG_PATH="/home/albert/Desktop/thinkpad-fan/sbin" ## Not need, but sometimes helpful (if $PROG resides in /opt for example).
-PID_PATH="/var/run/"
+PROG_PATH="/usr/sbin"
+PID_PATH="/var/run"
 LOGFILE="/dev/null"
 
 start() {
@@ -23,8 +23,9 @@ start() {
         echo "Error! Cannot start $PROG because it is currently running!" 1>&2
         exit 1
     else
-        ## Change from /dev/null to something like /var/log/$PROG if you want to save output.
-            (setsid "$PROG_PATH/$PROG" &);
+	echo "$PROG will be started in 10 seconds"
+	sleep 10s
+        (setsid "$PROG_PATH/$PROG" &);
         echo "$PROG started"
         touch "$PID_PATH/$PROG.pid"
     fi
@@ -33,6 +34,7 @@ start() {
 stop() {
     if [ -e "$PID_PATH/$PROG.pid" ]; then
         ## Program is running, so stop it
+        
         ##first set the fanspeed to auto
         echo level auto > /proc/acpi/ibm/fan
         ##then kill
