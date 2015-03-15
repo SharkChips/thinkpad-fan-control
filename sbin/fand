@@ -12,35 +12,36 @@ FOUR=40
 THREE=35
 TWO=30
 SLEEP=180
+CONFIGDIR=/home/albert/Desktop/thinkpad-fan
 
-#finds the config file
-WORKINGDIR="$(dirname "$0")"
-if [ ! -f "$WORKINGDIR/settings" ]; then
-    echo "ERROR: Could not access settings file. Check your $WORKINGDIR/settings file."
-    exit 1
+if [ ! -f "$CONFIGDIR/fand.conf" ]; then
+    echo "ERROR: Could not access settings file. Check your $CONFIGDIR/fand.conf file."
+    abort
 fi
 
 #parses the config file
-source "$WORKINGDIR/settings"
+source "$CONFIGDIR/fand.conf"
 
 #makes sure the config file is valid
 re='^[0-9]+$'
 if ! [[ $MAX =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $SEVEN =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $SIX =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $FIVE =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $FOUR =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $THREE =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $TWO =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
 elif ! [[ $SLEEP =~ $re ]] ; then
-   echo "Error: Bad Config File. Check $WORKINGDIR/settings" >&2; exit 1
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+else
+  echo "Using valid config file at $CONFIGDIR/fand.conf"
 fi
 
 #finds number of cpu cores
@@ -49,12 +50,12 @@ NUMCORES=$(grep -c ^processor /proc/cpuinfo)
 #checks that fan files and temp files exist
 if [ ! -f /proc/acpi/ibm/fan ]; then
     echo "ERROR: Could not access fan file."
-    exit 1
+    abort
 fi
 for i in `seq 0 $(($NUMCORES - 1))`; do
   if [ ! -f /sys/class/thermal/thermal_zone$i/temp ]; then
     echo "ERROR: Could not access temp file(s)."
-    exit 1
+    abort
   fi
 done
 
@@ -80,7 +81,8 @@ while true; do
     done
   #if the mode is neither MAX or AVG, the config file is broken
   else
-    echo "Error: Bad Config File. Check $WORKINGDIR/settings"
+    echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf"
+    abort
   fi
   
   #check config files and take action
@@ -104,3 +106,8 @@ while true; do
   sleep "$SLEEP"
 #end of main loop
 done
+
+abort() {
+  rm /var/run/fand.pid
+  exit 1
+}
