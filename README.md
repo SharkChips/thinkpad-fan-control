@@ -28,7 +28,7 @@ INSTALLATION
     options thinkpad_acpi fan_control=1
 
  10. Reboot to take effect
- 11. MAKE SURE ALL THE 
+ 11. MAKE SURE THE PERMISSIONS ARE CORRECT
  
 USAGE
 
