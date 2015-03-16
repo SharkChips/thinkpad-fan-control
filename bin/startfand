@@ -34,13 +34,12 @@ start() {
 stop() {
     if [ -e "$PID_PATH/$PROG.pid" ]; then
         ## Program is running, so stop it
-        
+        #remove pid file
+        rm "$PID_PATH/$PROG.pid"
         ##first set the fanspeed to auto
         echo level auto > /proc/acpi/ibm/fan
         ##then kill
         killall $PROG
-        #remove pid file
-        rm "$PID_PATH/$PROG.pid"
         echo "$PROG stopped"
     else
         ## Program is not running, exit with error.

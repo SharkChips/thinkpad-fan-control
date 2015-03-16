@@ -29,4 +29,5 @@ cp $WORKINGDIR/bin/fand /usr/sbin/fand
 cp $WORKINGDIR/bin/startfand /etc/init.d/fand
 #copies the settings file
 cp $WORKINGDIR/fand.conf /etc/fand.conf
-#
+#sets service to autoload
+update-rc.d fand defaults
