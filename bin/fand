@@ -61,6 +61,10 @@ done
 
 #loops every time we check the temps and change the fans
 while true; do
+
+  #resets variables
+  HIGHTEMP=0
+  CURRTEMP=0
   #determines the mode
   if (($MODE == MAX)); then
     #now that we know all the files exist, we must now find highest temp
