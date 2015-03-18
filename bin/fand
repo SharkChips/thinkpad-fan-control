@@ -74,7 +74,7 @@ while true; do
         HIGHTEMP=$CURRTEMP
       fi
     done
-  elif (($MODE == MAX)); then
+  elif (($MODE == AVG)); then
     for x in `seq 0 $(($NUMCORES - 1))`; do
       CURRTEMP=$(($(cat /sys/class/thermal/thermal_zone$x/temp) / 1000))
       if (($HIGHTEMP == 0)); then
