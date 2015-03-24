@@ -12,7 +12,7 @@
 
 # Author: Albert Zhang <albertzhang66@outlook.com>
 
-PROG="fand"
+PROG="fandaemon"
 PROG_PATH="/usr/sbin"
 PID_PATH="/var/run"
 LOGFILE="/dev/null"
