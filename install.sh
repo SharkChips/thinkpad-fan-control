@@ -26,7 +26,7 @@ fi
 #copies fand to sbin
 cp $WORKINGDIR/bin/fand /usr/sbin/fand
 #copies startfand to /etc/init.d/
-cp $WORKINGDIR/bin/startfand /etc/init.d/fand
+cp $WORKINGDIR/bin/startfand /etc/init.d/startfand
 #copies the settings file
 cp $WORKINGDIR/fand.conf /etc/fand.conf
 #sets service to autoload

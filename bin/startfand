@@ -23,8 +23,8 @@ start() {
         echo "Error! Cannot start $PROG because it is currently running!" 1>&2
         exit 1
     else
-	echo "$PROG will be started in 10 seconds"
-	sleep 10s
+	echo "$PROG will be started in 1 second"
+	sleep 1s
         (setsid "$PROG_PATH/$PROG" &);
         echo "$PROG started"
         touch "$PID_PATH/$PROG.pid"
@@ -63,13 +63,13 @@ case "$1" in
         stop
         exit 0
     ;;
-    restart | reload |force-reload)
-        stop
+    restart)
+        stop &
         start
         exit 0
     ;;
     **)
-        echo "Usage: $0 { start | stop | reload }" 1>&2
+        echo "Usage: $0 { start | stop | restart }" 1>&2
         exit 1
     ;;
 esac
