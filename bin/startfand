@@ -63,7 +63,7 @@ case "$1" in
         stop
         exit 0
     ;;
-    reload|restart|force-reload)
+    restart | reload |force-reload)
         stop
         start
         exit 0

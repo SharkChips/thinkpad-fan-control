@@ -12,7 +12,7 @@ FOUR=40
 THREE=35
 TWO=30
 SLEEP=180
-CONFIGDIR=/home/albert/Desktop/thinkpad-fan
+CONFIGDIR=/etc
 
 if [ ! -f "$CONFIGDIR/fand.conf" ]; then
     echo "ERROR: Could not access settings file. Check your $CONFIGDIR/fand.conf file."
@@ -87,6 +87,7 @@ while true; do
   else
     echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf"
     abort
+    exit 1 #for redundancy
   fi
   
   #check config files and take action
