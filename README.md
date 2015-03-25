@@ -1,5 +1,5 @@
-# thinkpad-fan
-An automated fan control daemon for ThinkPads
+<h1>thinkpad-fan</h1>
+<h3>An automated fan control daemon for ThinkPads</h3>
 
 <h4>OVERVIEW</h4>
 
