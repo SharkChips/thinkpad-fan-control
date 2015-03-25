@@ -1,11 +1,11 @@
 # thinkpad-fan
 An automated fan control daemon for ThinkPads
 
-OVERVIEW
+<h6>OVERVIEW</h6>
 
  thinkpad-fan controls your ThinkPad's fan. It will set your fan to different levels depending on the temperature of your ThinkPad.
  
-INSTALLATION
+<h6>INSTALLATION</h6>
 
  1. Download a .zip of thinkpad-fan from GitHub
  
@@ -28,16 +28,16 @@ INSTALLATION
  
  8. Reboot.
  
-USAGE
+<h6>USAGE</h6>
 
  1. Install the program
  
  2. Configure it as you desire. Configuration information in the "/etc/fand.conf" (after you have installed it), or in "<your_unzipped_directory>/fand.conf" (if you
-    have not installed it yet)
+    have not installed it yet). Remember, once you install the program the config file WILL NOT be in "<your_unzipped_directory>/fand.conf". It will be in "/etc/fand.conf"!!
     
  3. Enjoy!
  
-TROUBLESHOOTING
+<h6>TROUBLESHOOTING</h6>
 
  Permission Denied errors:
    This may mean that either the "fand" process isn't running as root, or something else is wrong. Make sure that you are running the script as root.
@@ -47,7 +47,7 @@ TROUBLESHOOTING
    Please locate the right file(s) and manually edit the "fand" script.
    Are you sure your computer is really a ThinkPad?
  
-ISSUES
+<h6>ISSUES</h6>
 
 Please report issues to: albertzhang66@outlook.com
 
