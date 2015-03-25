@@ -12,11 +12,37 @@ FOUR=40
 THREE=35
 TWO=30
 SLEEP=180
+CONFIGDIR=/etc
 
-#finds the config file
-WORKINGDIR="$(dirname "$0")"
+if [ ! -f "$CONFIGDIR/fand.conf" ]; then
+    echo "ERROR: Could not access settings file. Check your $CONFIGDIR/fand.conf file."
+    abort
+fi
+
 #parses the config file
-source "$WORKINGDIR/settings"
+source "$CONFIGDIR/fand.conf"
+
+#makes sure the config file is valid
+re='^[0-9]+$'
+if ! [[ $MAX =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $SEVEN =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $SIX =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $FIVE =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $FOUR =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $THREE =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $TWO =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+elif ! [[ $SLEEP =~ $re ]] ; then
+  echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf" >&2; abort
+else
+  echo "Using valid config file at $CONFIGDIR/fand.conf"
+fi
 
 #finds number of cpu cores
 NUMCORES=$(grep -c ^processor /proc/cpuinfo)
@@ -24,17 +50,21 @@ NUMCORES=$(grep -c ^processor /proc/cpuinfo)
 #checks that fan files and temp files exist
 if [ ! -f /proc/acpi/ibm/fan ]; then
     echo "ERROR: Could not access fan file."
-    exit 1
+    abort
 fi
 for i in `seq 0 $(($NUMCORES - 1))`; do
   if [ ! -f /sys/class/thermal/thermal_zone$i/temp ]; then
     echo "ERROR: Could not access temp file(s)."
-    exit 1
+    abort
   fi
 done
 
 #loops every time we check the temps and change the fans
 while true; do
+
+  #resets variables
+  HIGHTEMP=0
+  CURRTEMP=0
   #determines the mode
   if (($MODE == MAX)); then
     #now that we know all the files exist, we must now find highest temp
@@ -44,7 +74,7 @@ while true; do
         HIGHTEMP=$CURRTEMP
       fi
     done
-  else
+  elif (($MODE == AVG)); then
     for x in `seq 0 $(($NUMCORES - 1))`; do
       CURRTEMP=$(($(cat /sys/class/thermal/thermal_zone$x/temp) / 1000))
       if (($HIGHTEMP == 0)); then
@@ -53,6 +83,11 @@ while true; do
         HIGHTEMP=$(($(($CURRTEMP + $HIGHTEMP)) / 2))
       fi
     done
+  #if the mode is neither MAX or AVG, the config file is broken
+  else
+    echo "Error: Bad Config File. Check $CONFIGDIR/fand.conf"
+    abort
+    exit 1 #for redundancy
   fi
   
   #check config files and take action
@@ -76,3 +111,8 @@ while true; do
   sleep "$SLEEP"
 #end of main loop
 done
+
+abort() {
+  rm /var/run/fand.pid
+  exit 1
+}
