@@ -23,8 +23,6 @@ start() {
         echo "Error! Cannot start $PROG because it is currently running!" 1>&2
         exit 1
     else
-	echo "$PROG will be started in 1 second"
-	sleep 1s
         (setsid "$PROG_PATH/$PROG" &);
         echo "$PROG started"
         touch "$PID_PATH/$PROG.pid"
@@ -64,7 +62,7 @@ case "$1" in
         exit 0
     ;;
     restart)
-        stop &
+        stop
         start
         exit 0
     ;;

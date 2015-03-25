@@ -8,32 +8,33 @@ OVERVIEW
 INSTALLATION
 
  1. Download a .zip of thinkpad-fan from GitHub
- 2. Unzip it to a directory where only root can modify
- 3. Change the owner of all the files to root
-    THIS IS CRITICAL!!! NOT DOING THIS WOULD BE A HUGE SECURITY HOLE!!!
- 4. Change the files' permissions to all be read-only for everyone and executable for root
-    THIS IS ALSO CRITICAL!!! NOT DOING THIS WOULD BE A HUGE SECURITY HOLE!!!
- 5. Add this line to /etc/rc.local:
  
-    (setsid "/path/to/fand" &);
-    
- 6. The line after that line should be
+ 2. Unzip it to a directory
  
-    exit 0
-    
- 7. Make sure the "fand" and "settings" files are executable
- 8. For thinkpad-fan to work, you will need to create a file in "/etc/modprobe.d/" named "thinkpad_acpi.conf"
- 9. Add the following line to "thinkpad_acpi.conf"
+ 3. For thinkpad-fan to work, you will need to create a file in "/etc/modprobe.d/" named "thinkpad_acpi.conf"
+ 
+ 4. Add the following line to "thinkpad_acpi.conf"
  
     options thinkpad_acpi fan_control=1
-
- 10. Reboot to take effect
- 11. MAKE SURE ALL THE 
+ 
+ 5. Take a look at (and modify if needed) the file at "<your_unzipped_directory>/fand.conf". THIS IS NOT THE FINAL CONFIG FILE!! After you install thinkpad-fan, the 	   config file will be located at "/etc/fand.conf".
+ 
+ 6. Run the install.sh script as root. For example:
+    
+    cd <your_unzipped_directory>
+    sudo ./install.sh
+    
+ 7. Follow the instructions in the install script.
+ 
+ 8. Reboot.
  
 USAGE
 
  1. Install the program
- 2. Configure it as you desire. Configuration information in the "settings" files
+ 
+ 2. Configure it as you desire. Configuration information in the "/etc/fand.conf" (after you have installed it), or in "<your_unzipped_directory>/fand.conf" (if you
+    have not installed it yet)
+    
  3. Enjoy!
  
 TROUBLESHOOTING
@@ -44,8 +45,10 @@ TROUBLESHOOTING
  Cannot find file errors:
    This may mean that either your computer's fan control files or your computer's temperature files do not exist in the place thinkpad-fan looks in.
    Please locate the right file(s) and manually edit the "fand" script.
+   Are you sure your computer is really a ThinkPad?
  
 ISSUES
 
 Please report issues to: albertzhang66@outlook.com
+
 Thanks!!
