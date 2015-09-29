@@ -31,4 +31,3 @@ cp $WORKINGDIR/bin/startfand /etc/init.d/fand
 cp $WORKINGDIR/fand.conf /etc/fand.conf
 #sets service to autoload
 update-rc.d fand defaults
-#
